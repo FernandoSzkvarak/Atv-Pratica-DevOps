@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy HTML to GitHub Pages
 
 on:
   push:
@@ -6,25 +6,19 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - name: Validate HTML
+      uses: chrisderlin/html-validator-action@v1
       with:
-        node-version: '16'
-
-    - name: Install dependencies and build
-      run: |
-        npm install
-        npm run build
+        file: index.html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+        publish_dir: ./
